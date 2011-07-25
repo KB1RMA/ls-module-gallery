@@ -32,12 +32,12 @@
 			$this->add_form_field('title', 'left')->tab('Set Item');
 			$this->add_form_field('link', 'right')->tab('Set Item');
 
-			$editor_config = System_HtmlEditorConfig::get('gallery', 'gallery_description');
+			$editor_config = System_HtmlEditorConfig::get('gallery', 'gallery_set_item_description');
 			$field = $this->add_form_field('description')->tab('Set Item');
 			$field->renderAs(frm_html)->size('small');
 			$editor_config->apply_to_form_field($field);
 			
-			$this->add_form_field('images')->renderAs(frm_file_attachments)->renderFilesAs(frm_file_attachments)->renderFilesAs('image_list')->addDocumentLabel('Add image(s)')->tab('Images')->noAttachmentsLabel('There are no images uploaded')->noLabel()->imageThumbSize(555)->fileDownloadBaseUrl(url('ls_backend/files/get/'));
+			$this->add_form_field('images')->renderAs(frm_file_attachments)->renderFilesAs('image_list')->addDocumentLabel('Add image(s)')->tab('Images')->noAttachmentsLabel('There are no images uploaded')->noLabel()->imageThumbSize(555)->fileDownloadBaseUrl(url('ls_backend/files/get/'));
 			
 			Backend::$events->fireEvent('gallery:onExtendSetItemForm', $this, $context);
 			
@@ -56,7 +56,7 @@
 			if(is_string($item_orders))
 				$item_orders = explode(',', $item_orders);
 
-			foreach ($item_ids as $index=>$id) {
+			foreach ($item_ids as $index => $id) {
 				$order = $item_orders[$index];
 				Db_DbHelper::query('update gallery_set_items set sort_order=:sort_order where id=:id', array(
 					'sort_order' => $order,

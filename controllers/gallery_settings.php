@@ -2,7 +2,7 @@
 
 	class Gallery_Settings extends Backend_Controller {
 		public $implement = 'Db_FormBehavior, Db_ListBehavior';
-		protected $required_permissions = array('gallery:manage_licenses');
+		protected $required_permissions = array('gallery:manage_settings');
 
 		public function __construct() {
 			parent::__construct();

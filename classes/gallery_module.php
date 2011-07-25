@@ -18,7 +18,7 @@
 		}
 		
 		public function buildPermissionsUi($host_obj) {
-			$host_obj->add_field($this, 'galleries', 'Manage galleries', 'left')->renderAs(frm_checkbox)->comment('View and manage the update.', 'above');
+			$host_obj->add_field($this, 'galleries', 'Manage galleries', 'left')->renderAs(frm_checkbox)->comment('View and manage the galleries.', 'above');
 		}
 		
 		public function listTabs($tabCollection) {
@@ -48,7 +48,7 @@
 		
 		public function listHtmlEditorConfigs() {
 			return array(
-				'gallery_description' => 'Gallery description'
+				'gallery_set_item_description' => 'Gallery description'
 			);
 		}
 	}

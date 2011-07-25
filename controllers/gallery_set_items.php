@@ -59,6 +59,7 @@
 		public function listOverrideSortingColumn($sorting_column) {
 			if(Phpr::$router->action === 'reorder') {
 				$result = array('field' => 'sort_order', 'direction' => 'asc');
+				
 				return (object)$result;
 			}
 
