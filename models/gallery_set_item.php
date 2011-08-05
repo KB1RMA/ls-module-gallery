@@ -17,23 +17,30 @@
 			$this->define_column('title', 'Title')->order('asc')->validation()->fn('trim')->required("Please specify the title.");
 			$this->define_column('link', 'Link')->validation()->fn('trim');
 			$this->define_column('description', 'Description')->invisible()->validation()->fn('trim');
+			$this->define_column('long_description', 'Long Description')->invisible()->validation()->fn('trim');
 			$this->define_column('sort_order', 'Sort Order')->validation()->fn('trim')->unique("This sort order is already in use");
 			$this->define_column('enabled', 'Enabled');
 			$this->define_multi_relation_column('images', 'images', 'Images', '@name')->invisible();
+			$this->define_column('slug', 'Slug')->invisible()->validation()->fn('trim');
 			
 			$this->defined_column_list = array();
 			Backend::$events->fireEvent('gallery:onExtendSetItemModel', $this, $context);
 			$this->api_added_columns = array_keys($this->defined_column_list);
 		}
 
-		public function define_form_fields($context = null)
-		{
+		public function define_form_fields($context = null) {
 			$this->add_form_field('enabled', 'left')->tab('Set Item');
 			$this->add_form_field('title', 'left')->tab('Set Item');
-			$this->add_form_field('link', 'right')->tab('Set Item');
+			$this->add_form_field('slug', 'right')->tab('Set Item');
+			$this->add_form_field('link', 'full')->tab('Set Item');
 
 			$editor_config = System_HtmlEditorConfig::get('gallery', 'gallery_set_item_description');
 			$field = $this->add_form_field('description')->tab('Set Item');
+			$field->renderAs(frm_html)->size('small');
+			$editor_config->apply_to_form_field($field);
+			
+			$editor_config = System_HtmlEditorConfig::get('gallery', 'gallery_set_item_description');
+			$field = $this->add_form_field('long_description')->tab('Set Item');
 			$field->renderAs(frm_html)->size('small');
 			$editor_config->apply_to_form_field($field);
 			
@@ -47,6 +54,17 @@
 				if($form_field)
 					$form_field->optionsMethod('get_added_field_options');
 			}
+		}
+		
+		public function get_added_field_options($db_name, $current_key_value = -1) {
+			$result = Backend::$events->fireEvent('gallery:onGetSetItemFieldOptions', $db_name, $current_key_value);
+			
+			foreach($result as $options) {
+				if(is_array($options) || (strlen($options && $current_key_value != -1)))
+					return $options;
+			}
+
+			return false;
 		}
 		
 		public static function set_orders($item_ids, $item_orders) {

@@ -1,6 +1,17 @@
 <?
 
 	class Gallery_Actions extends Cms_ActionScope {
+		public function set() {
+			$this->data['set'] = null;
+
+			$slug = $this->request_param(0);
+
+			if(!$slug)
+				return;
+
+			$this->data['set'] = Gallery_Set_Item::create()->find_by_slug($slug);
+		}
+	
 		public function sets() {
 			$sets = Gallery_Set_Item::create()->order('sort_order')->find_all();
 			

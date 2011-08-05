@@ -1,5 +1,5 @@
 # ls-module-gallery
-LemonStand module that provides basic gallery functionality.
+Provides basic galleries for your store.
 
 ## Installation
 1. Download [Gallery](https://github.com/limewheel/ls-module-gallery/zipball/master)
@@ -20,3 +20,7 @@ Create or edit a page. Choose 'gallery:sets' as your Page Action. In your code, 
   <? endforeach ?>
 <? endforeach ?> 
 ```
+
+## Requirements
+
+* Module: [Tweak](https://github.com/ericmuyser/ls-module-tweak)

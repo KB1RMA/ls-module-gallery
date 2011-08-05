@@ -1,2 +1,3 @@
-#1|0.0.1 Added gallery management
-#2|0.0.2 Added gallery sorting column
+#1|0.0.1 Initialize.
+#2|0.0.2 Add set item sorting column.
+#3|0.0.3 Add slug to set item.

@@ -5,7 +5,7 @@
 	class Gallery_Module extends Core_ModuleBase {
 		const PATH = PATH_MOD_GALLERY;
 		
-		protected function createModuleInfo() {
+		protected function get_info() {
 			return new Core_ModuleInfo(
 				"Gallery",
 				"Management for your galleries",
@@ -13,15 +13,16 @@
 			);
 		}
 		
-		public function subscribeEvents() {
+		public function subscribe_events() {
 
 		}
 		
-		public function buildPermissionsUi($host_obj) {
-			$host_obj->add_field($this, 'galleries', 'Manage galleries', 'left')->renderAs(frm_checkbox)->comment('View and manage the galleries.', 'above');
+		public function build_ui_permissions($host) {
+			$host->add_field($this, 'manage_galleries', 'Manage galleries', 'left')->renderAs(frm_checkbox)->comment('View and manage the galleries.', 'above');
+			$host->add_field($this, 'manage_settings', 'Manage settings', 'left')->renderAs(frm_checkbox)->comment('View and manage the settings.', 'above');
 		}
 		
-		public function listTabs($tabCollection) {
+		public function list_tabs($tab_collection) {
 			$user = Phpr::$security->getUser();
 			
 			$tabs = array(
@@ -37,7 +38,7 @@
 			}
 
 			if($first_tab) {
-				$tab = $tabCollection->tab('gallery', 'Gallery', $first_tab, 30);
+				$tab = $tab_collection->tab('gallery', 'Gallery', $first_tab, 30);
 				
 				foreach($tabs as $tab_id => $tab_info) {
 					if($tab_info[3])
@@ -46,9 +47,33 @@
 			}
 		}
 		
-		public function listHtmlEditorConfigs() {
+		public function list_html_editor_configs() {
 			return array(
 				'gallery_set_item_description' => 'Gallery description'
 			);
+		}
+		
+		/**
+		 * Awaiting deprecation
+		 */
+		
+		protected function createModuleInfo() {
+			return $this->get_info();
+		}
+		
+		public function subscribeEvents() {
+			return $this->subscribe_events();
+		}
+		
+		public function buildPermissionsUi($host) {
+			return $this->build_ui_permissions($host);
+		}
+		
+		public function listTabs($tab_collection) {
+			return $this->list_tabs($tab_collection);
+		}
+		
+		public function listHtmlEditorConfigs() {
+			return $this->list_html_editor_configs();
 		}
 	}
