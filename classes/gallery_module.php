@@ -1,15 +1,15 @@
 <?
 
-	define('PATH_MOD_GALLERY', PATH_APP . '/modules/gallery');
+	define('PATH_MOD_GALLERY', realpath(dirname(__FILE__) . '/../'));
 	
 	class Gallery_Module extends Core_ModuleBase {
 		const PATH = PATH_MOD_GALLERY;
 		
-		protected function get_info() {
+		protected function create_module_info() {
 			return new Core_ModuleInfo(
 				"Gallery",
-				"Management for your galleries",
-				"Limewheel Creative Inc."
+				"Provides galleries for your store.",
+				"Limewheel Creative, Inc."
 			);
 		}
 		
@@ -26,8 +26,8 @@
 			$user = Phpr::$security->getUser();
 			
 			$tabs = array(
-				'set_items' => array('set_items', 'Set Items', 'set_items'),
-				'settings' => array('settings', 'Settings', 'settings')
+				'set_items' => array('set_items', 'Set Items', 'manage_galleries'),
+				'settings' => array('settings', 'Settings', 'manage_settings')
 			);
 
 			$first_tab = null;
@@ -58,7 +58,7 @@
 		 */
 		
 		protected function createModuleInfo() {
-			return $this->get_info();
+			return $this->create_module_info();
 		}
 		
 		public function subscribeEvents() {

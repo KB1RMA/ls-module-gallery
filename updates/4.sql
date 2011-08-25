@@ -1,0 +1,1 @@
+ALTER TABLE `gallery_set_items` ADD COLUMN `long_description` MEDIUMTEXT NULL;
