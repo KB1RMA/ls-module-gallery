@@ -27,7 +27,7 @@
 		public $list_custom_body_cells = null;
 		public $list_custom_head_cells = null;
 		
-		protected $required_permissions = array('gallery:sets');
+		protected $required_permissions = array('gallery:manage_galleries');
 
 		public function __construct() {
 			parent::__construct();
