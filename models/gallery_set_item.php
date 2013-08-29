@@ -4,7 +4,30 @@
 		public $table_name = 'gallery_set_items';
 
 		public $has_many = array(
-			'images' => array('class_name' => 'Db_File', 'foreign_key' => 'master_object_id', 'conditions' => "master_object_class='Gallery_Set_Item' and field='images'", 'order' => 'sort_order, id', 'delete' => true)
+			'images' => array(
+				'class_name'  => 'Db_File',
+				'foreign_key' => 'master_object_id',
+				'conditions'  => "master_object_class='Gallery_Set_Item' and field='images'",
+				'order'       => 'sort_order, id',
+				'delete'      => true
+			),
+			'subsets' => array(
+				'class_name'  => 'Gallery_Set_Item',
+				'foreign_key' => 'parent_set_id',
+				'order'       => 'sort_order, id',
+				'delete'      => true
+			),
+		);
+
+		public $belongs_to = array(
+			'parent_set' => array(
+				'class_name' => 'Gallery_Set_Item',
+				'foreign_key' => 'parent_set_id',
+			)
+		);
+
+		public $custom_columns = array(
+			'is_child' => db_bool,
 		);
 
 		protected $api_added_columns = array();
@@ -16,11 +39,13 @@
 		public function define_columns($context = null) {
 			$this->define_column('title', 'Title')->order('asc')->validation()->fn('trim')->required("Please specify the title.");
 			$this->define_column('link', 'Link')->validation()->fn('trim');
+			$this->define_column('is_child', 'Is Child');
 			$this->define_column('description', 'Description')->invisible()->validation()->fn('trim');
 			$this->define_column('long_description', 'Long Description')->invisible()->validation()->fn('trim');
 			$this->define_column('sort_order', 'Sort Order')->validation()->fn('trim')->unique("This sort order is already in use");
 			$this->define_column('enabled', 'Enabled');
 			$this->define_multi_relation_column('images', 'images', 'Images', '@name')->invisible();
+			$this->define_relation_column('parent_set', 'parent_set', 'Parent Set', db_varchar, '@title');
 			$this->define_column('slug', 'Slug')->invisible()->validation()->fn('trim');
 
 			$this->defined_column_list = array();
@@ -33,6 +58,7 @@
 			$this->add_form_field('title', 'left')->tab('Set Item');
 			$this->add_form_field('slug', 'right')->tab('Set Item');
 			$this->add_form_field('link', 'full')->tab('Set Item');
+			$this->add_form_field('parent_set', 'full')->tab('Set Item')->emptyOption('<--No Parent-->');
 
 			$editor_config = System_HtmlEditorConfig::get('gallery', 'gallery_set_item_description');
 			$field = $this->add_form_field('description')->tab('Set Item');
@@ -109,5 +135,10 @@
 				return root_url($page_url);
 
 			return root_url($page_url.'/'.$url_name);
+		}
+
+		public function is_child()
+		{
+			return $this->parent_set_id ? true : false;
 		}
 	}
